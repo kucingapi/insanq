@@ -1,24 +1,16 @@
 import { useEffect, useState } from 'react';
 import { API } from './API';
 import { underscoreToSpace } from './utils/functions/underscoreToUpper';
-import { DataGrid, GridLogicOperator, GridToolbar } from '@mui/x-data-grid';
-import { Test } from './Test';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import ChipSelection from './ChipSelections';
-import { Box, Stack, Typography, Button } from '@mui/material';
-
-const filterModel = {
-  items: [
-    { id: 1, field: 'project_status_id', operator: 'is', value: 'New' },
-    { id: 2, field: 'project_status_id', operator: 'is', value: 'Completed' },
-  ],
-  logicOperator: GridLogicOperator.Or,
-};
+import { Box, Stack, Typography, Button, Alert } from '@mui/material';
 
 function App() {
   const [originalData, setOriginalData] = useState([]);
   const [table, setTable] = useState({ rows: [], columns: [] });
   const [selectedChips, setSelectedChips] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState(new Date());
 
   useEffect(() => {
     setTable({ rows: [], columns: [] });
@@ -31,7 +23,12 @@ function App() {
         const tableHeader = key.map((value) => ({
           field: value,
           headerName: underscoreToSpace(value),
-          width: value === 'description' ? 400 : 150,
+          width:
+            value === 'project_status_id'
+              ? 250
+              : value === 'description'
+              ? 400
+              : 150,
         }));
         const projectStatusData = projectStatus.data.data;
         console.log(key);
@@ -43,6 +40,7 @@ function App() {
         });
         setOriginalData(data);
         setTable({ rows: data, columns: tableHeader });
+        setUpdatedAt(new Date());
       } catch (error) {
         console.log('Error fetching data:', error);
       }
@@ -80,6 +78,12 @@ function App() {
       >
         Refresh
       </Button>
+      <Alert severity="info">
+        Waktu terakhir update (MM/DD/YYYY, HH:MM:SS):{' '}
+        <Typography color="primary" fontWeight={700}>
+          {updatedAt.toLocaleString()}
+        </Typography>
+      </Alert>
       <DataGrid
         slots={{
           toolbar: GridToolbar,
@@ -92,6 +96,7 @@ function App() {
         checkboxSelection
         disableRowSelectionOnClick
         autoHeight
+        slotProps={{ sx: { background: 'black' } }}
       />
     </Stack>
   );
