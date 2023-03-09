@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { API } from './API';
 import { underscoreToSpace } from './utils/functions/underscoreToUpper';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import ChipSelection from './ChipSelections';
 import { Box, Stack, Typography, Button, Alert } from '@mui/material';
+import { ColoredRowDataGrid } from './components/ColoredRowDataGrid';
 
 function App() {
   const [originalData, setOriginalData] = useState([]);
@@ -84,20 +84,7 @@ function App() {
           {updatedAt.toLocaleString()}
         </Typography>
       </Alert>
-      <DataGrid
-        slots={{
-          toolbar: GridToolbar,
-        }}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 25 } },
-        }}
-        rows={table.rows}
-        columns={table.columns}
-        checkboxSelection
-        disableRowSelectionOnClick
-        autoHeight
-        slotProps={{ sx: { background: 'black' } }}
-      />
+      <ColoredRowDataGrid table={table} />
     </Stack>
   );
 }
