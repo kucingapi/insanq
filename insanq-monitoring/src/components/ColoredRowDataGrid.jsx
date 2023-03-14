@@ -155,7 +155,7 @@ export const ColoredRowDataGrid = ({ table }) => {
       disableRowSelectionOnClick
       autoHeight
       getRowClassName={(params) => {
-        const className = params.row.project_status_id.replace(/\s+/g, '-');
+        const className = params.row.projects_status_id.replace(/\s+/g, '-');
         return `super-app-theme--${className}`;
       }}
       slotProps={{

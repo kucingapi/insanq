@@ -17,26 +17,30 @@ function App() {
     const fetchData = async () => {
       try {
         const res = await API.getTable('projects');
-        const projectStatus = await API.getTable('project_statuses');
+        const projectStatus = await API.getTable('projects_status');
 
         const key = Object.keys(res.data.data[0]);
-        const tableHeader = key.map((value) => ({
-          field: value,
-          headerName: underscoreToSpace(value),
-          width:
-            value === 'project_status_id'
-              ? 250
-              : value === 'description'
-              ? 400
-              : 150,
-        }));
+        const tableHeader = key
+          .filter(
+            (value) => value !== 'projects_types_id' && value !== 'created_by'
+          )
+          .map((value) => ({
+            field: value,
+            headerName: underscoreToSpace(value),
+            width:
+              value === 'projects_status_id'
+                ? 250
+                : value === 'description'
+                ? 400
+                : 150,
+          }));
         const projectStatusData = projectStatus.data.data;
         console.log(key);
         const data = res.data.data.map((val) => {
           const projectStatusName = projectStatusData.find(
-            (obj) => obj.id === val.project_status_id
+            (obj) => obj.id === val.projects_status_id
           );
-          return { ...val, project_status_id: projectStatusName.name };
+          return { ...val, projects_status_id: projectStatusName.name };
         });
         setOriginalData(data);
         setTable({ rows: data, columns: tableHeader });
@@ -54,7 +58,7 @@ function App() {
       return;
     }
     const newData = originalData.filter((val) => {
-      return selectedChips.includes(val.project_status_id);
+      return selectedChips.includes(val.projects_status_id);
     });
     setTable({ rows: newData, columns: table.columns });
   }, [selectedChips, refresh]);

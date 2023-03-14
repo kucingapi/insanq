@@ -9,7 +9,7 @@ function ChipSelection({ selectedChips, setSelectedChips, refresh }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const rawData = await API.getTable('project_statuses');
+      const rawData = await API.getTable('projects_status');
       setData(rawData.data.data);
     };
     fetchData();
@@ -24,7 +24,7 @@ function ChipSelection({ selectedChips, setSelectedChips, refresh }) {
   };
 
   return (
-    <Stack gap={1} direction="row">
+    <Stack sx={{ overflowX: 'scroll' }} gap={1} direction="row">
       {data.map((chipName) => (
         <Chip
           key={chipName.name}

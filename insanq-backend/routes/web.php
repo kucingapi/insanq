@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
-/** @var \Laravel\Lumen\Routing\Router $router */
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +14,11 @@ use Illuminate\Http\Request;
 |
 */
 
-$router->get('/', function (Request $request) use ($router) {
-    return "test";
+$router->get('/', function () use ($router) {
+    return $router->app->version();
 });
 $router->get('/table', function (Request $request) use ($router) {
     $name = $request->input('name');
-    $results = app('db')->select("SELECT * FROM $name");
+    $results = DB::select("SELECT * FROM $name");
     return response()->json(['data' => $results]);
 });
