@@ -6,7 +6,9 @@ const getTable = async (tableName) =>
       name: `${tableName}`,
     },
   });
+const test = async () => serverApi.get(`/`);
 
 export const API = {
   getTable,
+  test
 };

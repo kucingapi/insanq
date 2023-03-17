@@ -1,5 +1,6 @@
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { darken, lighten, styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 const getBackgroundColor = (color, mode) =>
   mode === 'dark' ? darken(color, 0.7) : lighten(color, 0.7);
@@ -138,31 +139,33 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
 
 export const ColoredRowDataGrid = ({ table }) => {
   return (
-    <StyledDataGrid
-      slots={{
-        toolbar: GridToolbar,
-      }}
-      initialState={{
-        pagination: {
-          paginationModel: {
-            pageSize: 25,
+    <Box>
+      <StyledDataGrid
+        slots={{
+          toolbar: GridToolbar,
+        }}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 25,
+            },
           },
-        },
-      }}
-      rows={table.rows}
-      columns={table.columns}
-      checkboxSelection
-      disableRowSelectionOnClick
-      autoHeight
-      getRowClassName={(params) => {
-        const className = params.row.projects_status_id.replace(/\s+/g, '-');
-        return `super-app-theme--${className}`;
-      }}
-      slotProps={{
-        sx: {
-          background: 'black',
-        },
-      }}
-    />
+        }}
+        rows={table.rows}
+        columns={table.columns}
+        checkboxSelection
+        disableRowSelectionOnClick
+        autoHeight
+        getRowClassName={(params) => {
+          const className = params.row.projects_status_id.replace(/\s+/g, '-');
+          return `super-app-theme--${className}`;
+        }}
+        slotProps={{
+          sx: {
+            background: 'black',
+          },
+        }}
+      />
+    </Box>
   );
 };

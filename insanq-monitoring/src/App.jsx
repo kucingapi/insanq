@@ -18,11 +18,18 @@ function App() {
       try {
         const res = await API.getTable('projects');
         const projectStatus = await API.getTable('projects_status');
+        const projectType = await API.getTable('projects_types');
 
         const key = Object.keys(res.data.data[0]);
         const tableHeader = key
           .filter(
-            (value) => value !== 'projects_types_id' && value !== 'created_by'
+            (value) =>
+              value === 'created_at' ||
+              value === 'id' ||
+              value === 'projects_status_id' ||
+              value === 'projects_types_id' ||
+              value === 'name' ||
+              value === 'description'
           )
           .map((value) => ({
             field: value,
@@ -35,12 +42,22 @@ function App() {
                 : 150,
           }));
         const projectStatusData = projectStatus.data.data;
+        const projectTypeData = projectType.data.data;
         console.log(key);
         const data = res.data.data.map((val) => {
           const projectStatusName = projectStatusData.find(
             (obj) => obj.id === val.projects_status_id
           );
-          return { ...val, projects_status_id: projectStatusName.name };
+          const projectTypeName = projectTypeData.find(
+            (obj) => obj.id === val.projects_types_id
+          );
+          const description = val.description.replace(/<[^>]*>/g, '').trim();
+          return {
+            ...val,
+            description,
+            projects_status_id: projectStatusName.name,
+            projects_types_id: projectTypeName.name,
+          };
         });
         setOriginalData(data);
         setTable({ rows: data, columns: tableHeader });
@@ -49,7 +66,13 @@ function App() {
         console.log('Error fetching data:', error);
       }
     };
+    const minute = 60 * 1000;
+    const intervalRefreshData = 5 * minute;
+    const interval = setInterval(() => {
+      fetchData();
+    }, intervalRefreshData);
     fetchData();
+    return () => clearInterval(interval);
   }, [refresh]);
 
   useEffect(() => {
@@ -66,29 +89,26 @@ function App() {
   return (
     <Stack gap={5}>
       <Box>
-        <Typography variant="h5" color="initial" mb={2}>
-          Projek Status Filter
-        </Typography>
         <ChipSelection
           selectedChips={selectedChips}
           setSelectedChips={setSelectedChips}
           refresh={refresh}
         />
       </Box>
-      <Button
-        onClick={() => setRefresh(!refresh)}
-        variant="contained"
-        color="primary"
-      >
-        Refresh
-      </Button>
+      <ColoredRowDataGrid table={table} />
       <Alert severity="info">
         Waktu terakhir update (MM/DD/YYYY, HH:MM:SS):{' '}
         <Typography color="primary" fontWeight={700}>
           {updatedAt.toLocaleString()}
         </Typography>
+        <Button
+          onClick={() => setRefresh(!refresh)}
+          variant="contained"
+          color="primary"
+        >
+          Refresh
+        </Button>
       </Alert>
-      <ColoredRowDataGrid table={table} />
     </Stack>
   );
 }
