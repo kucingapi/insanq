@@ -15,6 +15,16 @@ const getSelectedHoverBackgroundColor = (color, mode) =>
   mode === 'dark' ? darken(color, 0.4) : lighten(color, 0.4);
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  '& .MuiDataGrid-virtualScroller': {
+    maxHeight: '60vh',
+    overflowY: 'scroll !important',
+  },
+  '& .MuiDataGrid-virtualScrollerContent': {
+    animation: 'scroll 40s linear 0s infinite',
+  },
+  '& .MuiDataGrid-cell': {
+    whiteSpace: 'normal !important',
+  },
   '& .super-app-theme--Selesai-Lap-Lengkap': {
     backgroundColor: getBackgroundColor(
       theme.palette.success.light,
@@ -147,7 +157,7 @@ export const ColoredRowDataGrid = ({ table }) => {
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 25,
+              pageSize: 100,
             },
           },
         }}

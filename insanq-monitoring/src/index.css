@@ -1,0 +1,8 @@
+@keyframes scroll {
+	0% {
+	  transform: translateY(0); /* start at the top */
+	}
+	100% {
+	  transform: translateY(-100%); /* scroll to the bottom */
+	}
+  }

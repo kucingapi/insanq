@@ -36,10 +36,10 @@ function App() {
             headerName: underscoreToSpace(value),
             width:
               value === 'projects_status_id'
-                ? 250
+                ? 230
                 : value === 'description'
-                ? 400
-                : 150,
+                ? 350
+                : 130,
           }));
         const projectStatusData = projectStatus.data.data;
         const projectTypeData = projectType.data.data;
@@ -87,7 +87,7 @@ function App() {
   }, [selectedChips, refresh]);
 
   return (
-    <Stack gap={5}>
+    <Stack>
       <Box>
         <ChipSelection
           selectedChips={selectedChips}
@@ -96,7 +96,10 @@ function App() {
         />
       </Box>
       <ColoredRowDataGrid table={table} />
-      <Alert severity="info">
+      <Alert
+        sx={{ width: 'fit-content', position: 'fixed', right: 0 }}
+        severity="info"
+      >
         Waktu terakhir update (MM/DD/YYYY, HH:MM:SS):{' '}
         <Typography color="primary" fontWeight={700}>
           {updatedAt.toLocaleString()}
