@@ -24,7 +24,7 @@ function ChipSelection({ selectedChips, setSelectedChips, refresh }) {
   };
 
   return (
-    <Stack sx={{ overflowX: 'scroll' }} gap={1} direction="row">
+    <Stack sx={{ minWidth: '200vw' }} gap={1} direction="row">
       {data.map((chipName) => (
         <Chip
           key={chipName.name}

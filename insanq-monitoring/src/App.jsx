@@ -88,7 +88,7 @@ function App() {
 
   return (
     <Stack>
-      <Box>
+      <Box sx={{ overflowX: 'scroll' }}>
         <ChipSelection
           selectedChips={selectedChips}
           setSelectedChips={setSelectedChips}
